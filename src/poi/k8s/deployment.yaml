@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poi-deployment
+  labels:
+    app: poi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: poi
+  template:
+    metadata:
+      labels:
+        app: poi
+    spec:
+      containers:
+      - name: poi
+        image: registryovq1287.azurecr.io/tripinsights/poi:2.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: trip-db-connection
+              key: SQL_PASSWORD
+        - name: SQL_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: trip-db-connection
+              key: SQL_SERVER
+        - name: SQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: trip-db-connection
+              key: SQL_USER
+
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: poi-service
+spec:
+  selector:
+    app: poi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trips-deployment
+  labels:
+    app: trips
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: trips
+  template:
+    metadata:
+      labels:
+        app: trips
+    spec:
+      containers:
+      - name: trips
+        image: registryovq1287.azurecr.io/tripinsights/trips:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: SQL_PASSWORD
+          value: "asdasdsad123123asdasd123!xD"
+        - name: SQL_SERVER
+          value: sqlserverovq1287.database.windows.net
+        - name: SQL_USER
+          value: sqladminoVq1287
+        - name: OPENAPI_DOCS_URI
+          value: http://$EXTERNAL_IP"
+
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trips-service
+spec:
+  selector:
+    app: trips
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
