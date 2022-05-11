@@ -114,3 +114,6 @@ Get healthcheck status
 ```bash
 curl -i -X GET 'http://localhost:8080/api/user/healthcheck' 
 ```
+
+
+gci -Recurse -filter deployment.yaml -Path C:\repos\containers_artifacts | where FullName -NotMatch tripviewer | ForEach-Object { kubectl apply -n api -f $_.FullName }; kubectl apply -n web -f C:\repos\containers_artifacts\src\tripviewer\k8s\deployment.yaml

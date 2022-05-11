@@ -6,7 +6,7 @@ metadata:
   labels:
     app: userprofile
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: userprofile
@@ -41,10 +41,6 @@ spec:
           requests:
             memory: "128Mi"
             cpu: "100m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-
 ---
 apiVersion: v1
 kind: Service

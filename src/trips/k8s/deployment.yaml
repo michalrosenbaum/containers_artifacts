@@ -6,7 +6,7 @@ metadata:
   labels:
     app: trips
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: trips
@@ -22,22 +22,23 @@ spec:
         ports:
         - containerPort: 80
         env:
-        - name: SQL_PASSWORD
-          value: "asdasdsad123123asdasd123!xD"
-        - name: SQL_SERVER
-          value: sqlserverovq1287.database.windows.net
-        - name: SQL_USER
-          value: sqladminoVq1287
         - name: OPENAPI_DOCS_URI
           value: http://$EXTERNAL_IP"
-
         resources:
           requests:
             memory: "128Mi"
             cpu: "100m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+        volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/secrets"
+          readOnly: true
+      volumes:
+        - name: secrets-store01-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "azure-key-vault-secrets"
 
 ---
 apiVersion: v1
