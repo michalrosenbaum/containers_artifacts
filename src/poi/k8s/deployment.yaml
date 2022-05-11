@@ -24,6 +24,21 @@ spec:
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: Production
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: trip-db-connection
+              key: SQL_PASSWORD
+        - name: SQL_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: trip-db-connection
+              key: SQL_SERVER
+        - name: SQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: trip-db-connection
+              key: SQL_USER
         resources:
           requests:
             memory: "128Mi"
