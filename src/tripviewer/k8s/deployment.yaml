@@ -39,7 +39,7 @@ metadata:
 spec:
   selector:
     app: tripviewer
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - protocol: TCP
       port: 80
